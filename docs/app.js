@@ -151,7 +151,7 @@ async function load(){
 }
 async function syncGitHub(){
  $('sync').disabled=true;$('sync').textContent='⟳ 正在同步…';
- try{await refreshLibraryData();await load();toast('公开 Star 已更新并加密缓存；原分类沿用发布快照。');}catch(error){toast(error.message||'GitHub 暂时无法连接，原目录已保留。');}finally{$('sync').disabled=false;$('sync').textContent='⟳ 同步 GitHub';}
+ try{await refreshLibraryData();await load();toast('已载入线上最新快照；GitHub 后台每 6 小时刷新公开 Star。');}catch(error){toast(error.message||'GitHub 暂时无法连接，原目录已保留。');}finally{$('sync').disabled=false;$('sync').textContent='⟳ 同步 GitHub';}
 }
 document.addEventListener('click',event=>{
  const button=event.target.closest('button,a');if(!button)return;

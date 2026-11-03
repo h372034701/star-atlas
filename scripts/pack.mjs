@@ -33,7 +33,7 @@ const syncStart=app.indexOf('async function syncGitHub(){');
 const syncEnd=app.indexOf("document.addEventListener('click'",syncStart);
 app=app.slice(0,syncStart)+`async function syncGitHub(){
  $('sync').disabled=true;$('sync').textContent='⟳ 正在同步…';
- try{await refreshLibraryData();await load();toast('公开 Star 已更新并加密缓存；原分类沿用发布快照。');}catch(error){toast(error.message||'GitHub 暂时无法连接，原目录已保留。');}finally{$('sync').disabled=false;$('sync').textContent='⟳ 同步 GitHub';}
+ try{await refreshLibraryData();await load();toast('已载入线上最新快照；GitHub 后台每 6 小时刷新公开 Star。');}catch(error){toast(error.message||'GitHub 暂时无法连接，原目录已保留。');}finally{$('sync').disabled=false;$('sync').textContent='⟳ 同步 GitHub';}
 }
 `+app.slice(syncEnd);
 app=app.replaceAll('私密分类（仅本机显示）','私密分类（解锁后可见）').replaceAll('本地个人索引','加密个人索引').replaceAll('GitHub GraphQL ·','GitHub ·');

@@ -1,0 +1,14 @@
+import fs from 'node:fs/promises';
+import {deriveKey,decrypt,encrypt} from '../docs/crypto.js';
+import {refreshPublicStars} from '../docs/public-sync.js';
+const password=process.env.ATLAS_ACCESS_PASSWORD;
+const token=process.env.GH_TOKEN;
+if(!password||!token)throw new Error('The refresh job requires repository secrets and its GitHub Actions token.');
+const envelope=JSON.parse(await fs.readFile('docs/data/vault.json','utf8'));
+const key=await deriveKey(password,envelope);
+const bundle=await decrypt(envelope,key);
+const request=(url,options)=>fetch(url,{...options,headers:{...options.headers,Authorization:`Bearer ${token}`,'User-Agent':'Star-Atlas-Refresh'}});
+const data=await refreshPublicStars(bundle.data,request);
+const updated=await encrypt({...bundle,data},key,envelope);
+await fs.writeFile('docs/data/vault.json',JSON.stringify(updated));
+console.log(`Encrypted public-Star snapshot refreshed: ${data.repositories.length} repositories.`);
